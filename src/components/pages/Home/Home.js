@@ -1,10 +1,10 @@
 import React from 'react';
+import Posts from '../../features/Posts/Posts';
 
 const Home = () => {
   return (
     <div>
-      <h2>Przykładowy nagłówek Home</h2>
-      <p>Tutaj znajdziesz przykładowy tekst do edycji.</p>
+      <Posts />
     </div>
   );
 };
