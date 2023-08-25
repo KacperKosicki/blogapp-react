@@ -4,7 +4,6 @@ import { useParams, NavLink } from 'react-router-dom';
 import { Button, Modal } from 'react-bootstrap';
 import { removePost } from '../../../redux/postsRedux';
 import { Navigate } from 'react-router-dom';
-import styles from './SinglePost.module.scss'
 
 const SinglePost = () => {
   const { id } = useParams();
@@ -21,11 +20,7 @@ const SinglePost = () => {
   };
 
   if (!post) {
-    return <div>
-        <h2 className={styles.notFound}>404 Not Found</h2>
-      <p className={styles.notFoundText}>Przepraszamy, post którego szukasz, nie istnieje...</p>
-    </div>
-    // lub zamiast tego dodanie <Navigate to="/" />;
+    return <Navigate to="/" />;
   }
 
   return (

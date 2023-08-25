@@ -1,10 +1,10 @@
 import React from 'react';
+import AddPostForm from '../../features/AddPostForm/AddPostForm';
 
 const AddPost = () => {
   return (
     <div>
-      <h2>Przykładowy nagłówek AddPost</h2>
-      <p>Tutaj znajdziesz przykładowy tekst do edycji.</p>
+      <AddPostForm />
     </div>
   );
 };
