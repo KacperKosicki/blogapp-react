@@ -1,10 +1,11 @@
 import React from 'react';
+import EditPostForm from '../../features/EditPostForm/EditPostForm';
 
 const EditPost = () => {
+
   return (
     <div>
-      <h2>Przykładowy nagłówek EditPost</h2>
-      <p>Tutaj znajdziesz przykładowy tekst do edycji.</p>
+      <EditPostForm />
     </div>
   );
 };
