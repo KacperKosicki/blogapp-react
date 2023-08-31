@@ -2,6 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Card, Button, Col, Row } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
+import formatDate from '../../../utils/DateToStr/DateToStr';
 
 const Posts = () => {
   const posts = useSelector(state => state.posts);
@@ -24,7 +25,7 @@ const Posts = () => {
                   <div className="author-label"><strong>Author:</strong> {post.author}</div>
                 </div>
                 <div className="published-info">
-                  <div className="published-label"><strong>Published:</strong> {post.publishedDate}</div>
+                  <div className="published-label"><strong>Published:</strong> {formatDate(post.publishedDate)}</div>
                 </div>
                 <Card.Text className="mt-2">{post.shortDescription}</Card.Text>
                 <NavLink to={`/post/${post.id}`}>

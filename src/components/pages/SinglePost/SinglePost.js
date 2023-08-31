@@ -4,6 +4,7 @@ import { useParams, NavLink } from 'react-router-dom';
 import { Button, Modal } from 'react-bootstrap';
 import { removePost } from '../../../redux/postsRedux';
 import { Navigate } from 'react-router-dom';
+import formatDate from '../../../utils/DateToStr/DateToStr';
 
 const SinglePost = () => {
   const { id } = useParams();
@@ -39,9 +40,9 @@ const SinglePost = () => {
           <div><strong>Author:</strong> {post.author}</div>
         </div>
         <div className="published-info">
-          <div><strong>Published:</strong> {post.publishedDate}</div>
+          <div><strong>Published:</strong> {formatDate(post.publishedDate)}</div>
         </div>
-        <p className="mt-2">{post.content}</p>
+        <div dangerouslySetInnerHTML={{ __html: post.content }} />
       </div>
       
       <Modal show={showConfirmation} onHide={() => setShowConfirmation(false)}> 

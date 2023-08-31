@@ -2,16 +2,22 @@ import React, { useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const PostForm = ({ action, actionText, initialData = {} }) => {
   const [formData, setFormData] = useState({
     id: initialData.id || uuidv4(),
     title: initialData.title || '',
     author: initialData.author || '',
-    publishedDate: initialData.publishedDate || '',
+    publishedDate: initialData.publishedDate || new Date(),
     shortDescription: initialData.shortDescription || '',
     content: initialData.content || '',
   });
+
+  const [selectedDate, setSelectedDate] = useState(initialData.publishedDate || new Date());
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -21,9 +27,23 @@ const PostForm = ({ action, actionText, initialData = {} }) => {
     }));
   };
 
+  const handleContentChange = (value) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      content: value,
+    }));
+  };
+
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    action(formData);
+    action({
+      ...formData,
+      publishedDate: selectedDate,
+    });
   };
 
   const renderFormField = (name, label, type = 'text', rows = 1) => (
@@ -45,9 +65,23 @@ const PostForm = ({ action, actionText, initialData = {} }) => {
     <Form onSubmit={handleSubmit}>
       {renderFormField('title', 'Title')}
       {renderFormField('author', 'Author')}
-      {renderFormField('publishedDate', 'Published Date')}
-      {renderFormField('shortDescription', 'Short Description', 'textarea', 3)}
-      {renderFormField('content', 'Main Content', 'textarea', 5)}
+      <Form.Group className="mb-3" controlId="publishedDate">
+        <Form.Label>Published</Form.Label><br></br>
+        <DatePicker
+          selected={selectedDate}
+          onChange={handleDateChange}
+          dateFormat="MM/dd/yyyy"
+          className="form-control"
+        />
+      </Form.Group>
+      {renderFormField('shortDescription', 'Short description', 'textarea', 3)}
+      <Form.Group className="mb-3" controlId="content">
+        <Form.Label>Main content</Form.Label>
+        <ReactQuill
+          value={formData.content}
+          onChange={handleContentChange}
+        />
+      </Form.Group>
       <Button variant="primary" type="submit">
         {actionText}
       </Button>
@@ -62,7 +96,7 @@ PostForm.propTypes = {
     id: PropTypes.string,
     title: PropTypes.string,
     author: PropTypes.string,
-    publishedDate: PropTypes.string,
+    publishedDate: PropTypes.instanceOf(Date),
     shortDescription: PropTypes.string,
     content: PropTypes.string,
   }),
