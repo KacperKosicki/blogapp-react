@@ -9,8 +9,8 @@ const Posts = () => {
 
   return (
     <div>
-       <div className="d-flex justify-content-between align-items-center mb-3">
-        <h2 className="mb-4">All posts</h2>
+       <div className="d-flex justify-content-between align-items-center mb-4">
+        <h2 className="mb-0">All posts</h2>
         <NavLink to="/post/add">
           <Button variant="btn btn-outline-primary">Add post</Button>
         </NavLink>

@@ -1,20 +1,29 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { editPost } from '../../../redux/postsRedux';
 import PostForm from '../PostForm/PostForm';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
-const EditPostForm = ({ postToEdit }) => {
+const EditPostForm = () => {
+  const { id } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleSubmit = post => {
-    dispatch(editPost({ ...post, id: postToEdit.id }));
+  const postToEdit = useSelector((state) =>
+    state.posts.find((post) => post.id === id)
+  );
+
+  const handleSubmit = (post) => {
+    dispatch(editPost(post));
     navigate('/');
   };
 
   return (
-    <PostForm action={handleSubmit} actionText="Edit Post" initialData={postToEdit.id} />
+    <PostForm
+      action={handleSubmit}
+      actionText="Edit Post"
+      initialData={postToEdit}
+    />
   );
 };
 
