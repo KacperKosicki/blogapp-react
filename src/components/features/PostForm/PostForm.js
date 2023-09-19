@@ -73,7 +73,7 @@ const PostForm = ({ action, actionText, initialData = {} }) => {
           dateFormat="MM/dd/yyyy"
           className="form-control"
         />
-      </Form.Group>
+    </Form.Group>
       {renderFormField('shortDescription', 'Short description', 'textarea', 3)}
       <Form.Group className="mb-3" controlId="content">
         <Form.Label>Main content</Form.Label>
@@ -81,7 +81,7 @@ const PostForm = ({ action, actionText, initialData = {} }) => {
           value={formData.content}
           onChange={handleContentChange}
         />
-      </Form.Group>
+    </Form.Group>
       <Button variant="primary" type="submit">
         {actionText}
       </Button>

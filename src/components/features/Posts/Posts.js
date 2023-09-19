@@ -17,7 +17,7 @@ const Posts = () => {
       </div>
       <Row>
         {posts.map(post => (
-          <Col key={post.id} md={4} className="mb-4">
+          <Col key={post.id} post={post} md={4} className="mb-4">
             <Card>
               <Card.Body>
                 <Card.Title>{post.title}</Card.Title>
