@@ -6,81 +6,86 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { useForm } from "react-hook-form";
+import { useDispatch } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const PostForm = ({ action, actionText, initialData = {} }) => {
-  const [formData, setFormData] = useState({
-    id: initialData.id || uuidv4(),
-    title: initialData.title || '',
-    author: initialData.author || '',
-    publishedDate: initialData.publishedDate || new Date(),
-    shortDescription: initialData.shortDescription || '',
-    content: initialData.content || '',
-  });
+  console.log(initialData)
+  const navigate = useNavigate();
+  const { id } = useParams();
 
-  const [selectedDate, setSelectedDate] = useState(initialData.publishedDate || new Date());
+  const { register, handleSubmit: validate, formState: { errors } } = useForm();
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+  const [content, setContent] = useState(initialData.content);
+  const [contentError, setContentError] = useState(false);
+  const [date, setDate] = useState(initialData.publishedDate || new Date());
+  const [dateError, setDateError] = useState(false);
+
+  const handleSubmit = (data) => {
+    console.log('siusiak');
+    setContentError(!data.content);
+    setDateError(!data.publishedDate);
+
+    if (content && date) {
+      const preparedData = {...data, publishedDate: date, content, id: initialData.id || uuidv4()};
+      console.log(preparedData);
+      action(preparedData);
+      navigate('/');
+    }
   };
-
-  const handleContentChange = (value) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      content: value,
-    }));
-  };
-
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    action({
-      ...formData,
-      publishedDate: selectedDate,
-    });
-  };
-
-  const renderFormField = (name, label, type = 'text', rows = 1) => (
-    <Form.Group className="mb-3" controlId={name}>
-      <Form.Label>{label}</Form.Label>
-      <Form.Control
-        type={type}
-        as={type === 'textarea' ? 'textarea' : 'input'}
-        rows={rows}
-        placeholder={`Enter ${label.toLowerCase()}`}
-        name={name}
-        value={formData[name]}
-        onChange={handleChange}
-      />
-    </Form.Group>
-  );
 
   return (
-    <Form onSubmit={handleSubmit}>
-      {renderFormField('title', 'Title')}
-      {renderFormField('author', 'Author')}
+    <Form onSubmit={validate(handleSubmit)}>
+      <Form.Group className="mb-3" controlId="formBasicEmail">
+        <Form.Label>Title</Form.Label>
+        <Form.Control
+          type="text"
+          placeholder="Enter title"
+          name="title"
+          defaultValue={initialData.title}
+          {...register("title", { required: true, minLength: 3 })}
+        />
+        {errors.title && <small className="d-block form-text text-danger mt-2">Title is too short (min is 3)</small>}
+      </Form.Group>
+      <Form.Group className="mb-3" controlId="author">
+        <Form.Label>Author</Form.Label>
+        <Form.Control
+          type="text"
+          placeholder="Enter author"
+          name="author"
+          defaultValue={initialData.author}
+          {...register("author", { required: true, minLength: 3 })}
+        />
+        {errors.author && <small className="d-block form-text text-danger mt-2">Author is too short (min is 3)</small>}
+      </Form.Group>
       <Form.Group className="mb-3" controlId="publishedDate">
-        <Form.Label>Published</Form.Label><br></br>
+        <Form.Label>Published</Form.Label><br />
         <DatePicker
-          selected={selectedDate}
-          onChange={handleDateChange}
+          selected={date}
+          onChange={setDate}
           dateFormat="MM/dd/yyyy"
           className="form-control"
         />
       </Form.Group>
-      {renderFormField('shortDescription', 'Short description', 'textarea', 3)}
+      <Form.Group className="mb-3" controlId="shortDescription">
+        <Form.Label>Short description</Form.Label>
+        <Form.Control
+          as="textarea"
+          rows={3}
+          placeholder="Enter short description"
+          name="shortDescription"
+          defaultValue={initialData.shortDescription}
+          {...register("shortDescription", { required: true, minLength: 20 })}
+        />
+        {errors.shortDescription && <small className="d-block form-text text-danger mt-2">Short description is too short (min is 20)</small>}
+      </Form.Group>
       <Form.Group className="mb-3" controlId="content">
         <Form.Label>Main content</Form.Label>
         <ReactQuill
-          value={formData.content}
-          onChange={handleContentChange}
-        />
+          defaultValue={initialData.content}
+          onChange={setContent}
+        />     
       </Form.Group>
       <Button variant="primary" type="submit">
         {actionText}
