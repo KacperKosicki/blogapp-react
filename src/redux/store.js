@@ -4,6 +4,9 @@ import postsReducer from './postsRedux';
 
 const subreducers = {
   posts: postsReducer,
+  categories: (state = initialState.categories) => {
+    return state;
+  },
 }
 
 const reducer = combineReducers(subreducers);

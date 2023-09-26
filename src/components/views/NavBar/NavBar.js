@@ -10,6 +10,7 @@ const NavBar = () => {
       <div className="flex-grow-1"></div>
       <Nav className={styles.navbarLinks}>
         <Nav.Link as={NavLink} to="/">Home</Nav.Link>
+        <Nav.Link as={NavLink} to="/categories">Categories</Nav.Link>
         <Nav.Link as={NavLink} to="/about">About</Nav.Link>
       </Nav>
     </Navbar>

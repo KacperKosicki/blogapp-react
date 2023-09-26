@@ -1,4 +1,6 @@
 const initialState = {
+    categories:
+    ["Sport", "News", "Movies"],
     posts: [
         {
             id: '1',
@@ -6,7 +8,8 @@ const initialState = {
             shortDescription: 'Short description of the article...',
             content: 'Main content of the article',
             publishedDate: new Date('2022-02-02'),
-            author: 'John Doe'
+            author: 'John Doe',
+            category: 'News'
         },
 
         {
@@ -15,7 +18,8 @@ const initialState = {
             shortDescription: 'Short description of the article...',
             content: 'Main content of the article',
             publishedDate: new Date('2022-02-02'),
-            author: 'John Doe II'
+            author: 'John Doe II',
+            category: 'Sport'
         },
         {
             id: '3',
@@ -23,7 +27,8 @@ const initialState = {
             shortDescription: 'Short description of the article...',
             content: 'Main content of the article',
             publishedDate: new Date('2022-02-02'),
-            author: 'John Doe III'
+            author: 'John Doe III',
+            category: 'Movies'
         },
     ],
 }

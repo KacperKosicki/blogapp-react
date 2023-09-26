@@ -7,13 +7,12 @@ import 'react-quill/dist/quill.snow.css';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useForm } from "react-hook-form";
-import { useDispatch } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 const PostForm = ({ action, actionText, initialData = {} }) => {
   console.log(initialData)
   const navigate = useNavigate();
-  const { id } = useParams();
 
   const { register, handleSubmit: validate, formState: { errors } } = useForm();
 
@@ -21,6 +20,9 @@ const PostForm = ({ action, actionText, initialData = {} }) => {
   const [contentError, setContentError] = useState(false);
   const [date, setDate] = useState(initialData.publishedDate || new Date());
   const [dateError, setDateError] = useState(false);
+  
+  const categories = useSelector(state => state.categories || []);
+  console.log("Categories:", categories);
 
   const handleSubmit = (data) => {
     console.log('siusiak');
@@ -30,6 +32,7 @@ const PostForm = ({ action, actionText, initialData = {} }) => {
     if (content && date) {
       const preparedData = {...data, publishedDate: date, content, id: initialData.id || uuidv4()};
       console.log(preparedData);
+      console.log(categories);
       action(preparedData);
       navigate('/');
     }
@@ -68,6 +71,22 @@ const PostForm = ({ action, actionText, initialData = {} }) => {
           className="form-control"
         />
       </Form.Group>
+      <Form.Group className="mb-3" controlId="category">
+        <Form.Label>Category</Form.Label>
+        <Form.Control 
+          as="select" 
+          name="category" 
+          defaultValue=""
+          {...register("category", { required: true })}>
+          <option value="" disabled>Select a category</option>
+          {categories.map(category => (
+            <option key={category} value={category}>
+              {category}
+            </option>
+          ))}
+        </Form.Control>
+        {errors.category && <small className="d-block form-text text-danger mt-2">Please select a category</small>}
+      </Form.Group>
       <Form.Group className="mb-3" controlId="shortDescription">
         <Form.Label>Short description</Form.Label>
         <Form.Control
@@ -104,6 +123,7 @@ PostForm.propTypes = {
     publishedDate: PropTypes.instanceOf(Date),
     shortDescription: PropTypes.string,
     content: PropTypes.string,
+    category: PropTypes.string,
   }),
 };
 

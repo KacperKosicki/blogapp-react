@@ -10,7 +10,7 @@ const Posts = () => {
   return (
     <div>
        <div className="d-flex justify-content-between align-items-center mb-4">
-        <h2 className="mb-0">All posts</h2>
+          <h2 className="mb-0">All posts</h2>
         <NavLink to="/post/add">
           <Button variant="btn btn-outline-primary">Add post</Button>
         </NavLink>
@@ -26,6 +26,7 @@ const Posts = () => {
                 </div>
                 <div className="published-info">
                   <div className="published-label"><strong>Published:</strong> {formatDate(post.publishedDate)}</div>
+                  <div className="category-label"><strong>Category:</strong> {post.category}</div>
                 </div>
                 <Card.Text className="mt-2">{post.shortDescription}</Card.Text>
                 <NavLink to={`/post/${post.id}`}>

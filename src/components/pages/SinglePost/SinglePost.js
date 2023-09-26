@@ -42,6 +42,9 @@ const SinglePost = () => {
         <div className="published-info">
           <div><strong>Published:</strong> {formatDate(post.publishedDate)}</div>
         </div>
+        <div className="category-info mb-2">
+          <div><strong>Category:</strong> {post.category}</div>
+        </div>
         <div dangerouslySetInnerHTML={{ __html: post.content }} />
       </div>
       
